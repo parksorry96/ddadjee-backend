@@ -1,0 +1,109 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.5.4'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.ddadjee'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+// Spring Modulith BOM 관리
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.modulith:spring-modulith-bom:1.2.0"
+    }
+}
+
+dependencies {
+    // ===== Core Spring Boot Starters =====
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    implementation 'io.github.cdimascio:java-dotenv:5.1.1'
+
+    // OAuth2 (Resource Server + Client)
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
+    // ===== 필수 추가 라이브러리 =====
+
+    // JWT 지원
+    implementation 'io.jsonwebtoken:jjwt-api:0.12.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.5'
+
+    // MapStruct - DTO 매핑
+    implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+
+    // API 문서화
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
+
+    // 유틸리티
+    implementation 'org.apache.commons:commons-lang3:3.18.0'
+
+    // ===== Spring Modulith =====
+    // 모듈러 모놀리스 핵심 기능
+    implementation 'org.springframework.modulith:spring-modulith-starter-core'
+    implementation 'org.springframework.modulith:spring-modulith-starter-jpa'
+    
+    // 모듈 간 이벤트 통신
+    implementation 'org.springframework.modulith:spring-modulith-events-api'
+    
+    // Actuator 통합 (모듈 모니터링)
+    implementation 'org.springframework.modulith:spring-modulith-actuator'
+    
+    // 모듈 구조 문서화 및 테스트
+    testImplementation 'org.springframework.modulith:spring-modulith-starter-test'
+
+    // ===== Database & ORM =====
+    runtimeOnly 'org.postgresql:postgresql'
+
+    // Lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+
+    // Configuration Processor
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+    // ===== Development Tools =====
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    // ===== Test Dependencies =====
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testRuntimeOnly 'com.h2database:h2'
+}
+
+// MapStruct 컴파일 옵션
+compileJava {
+    options.compilerArgs = [
+            '-Amapstruct.defaultComponentModel=spring',
+            '-Amapstruct.unmappedTargetPolicy=IGNORE'
+    ]
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
