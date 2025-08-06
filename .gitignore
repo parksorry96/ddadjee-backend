@@ -35,3 +35,63 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Environment ###
+.env
+.env.local
+.env.development
+.env.production
+*.env
+
+### Logs ###
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+### OS Files ###
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+### Test Coverage ###
+coverage/
+*.lcov
+.nyc_output
+
+### Database ###
+*.db
+*.sqlite
+*.sqlite3
+
+### Temporary Files ###
+tmp/
+temp/
+*.tmp
+*.temp
+*.bak
+*.backup
+*.old
+
+### Application Specific ###
+uploads/
+download/
+storage/
+*.pid
+*.seed
+*.pid.lock
+
+### Documentation ###
+docs/generated/
+*.pdf
+
+### Secrets ###
+*.key
+*.pem
+*.crt
+*.p12
+keystore/
+truststore/
